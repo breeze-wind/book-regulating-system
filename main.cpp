@@ -10,7 +10,7 @@ public:
     {
         isexist=false;//初始化认为书不存在
     };
-    ~BookData()=default;
+    //~BookData()=default;
     void setTitle(string& title)
     {
         this->booktitle =title;
@@ -34,19 +34,23 @@ public:
     bool isexist;
     string bookTitle(void)
     {
-    	return this->booktitle;
+    	return booktitle;
 	}
+	char bookTitle(int i)
+    {
+    	return booktitle[i];
+    }
 	   string ISBN(void)
     {
-    	return this->isbn;
+    	return isbn;
 	}
 	string bookauthor(void)
     {
-	    return this->bookAuthor;
+	    return bookAuthor;
     }
 	int qtyOnHand(void)
     {
-	    return this->QtyOnHand;
+	    return QtyOnHand;
     }
 	double retail(void)
     {
@@ -74,7 +78,7 @@ BookData operator -(BookData& book,int a)
 }
 
 void bookfile_managing(void);
-BookData books[200];//书库容器
+BookData books[50];//书库容器
 void  lookUpBook(string);
 void Bookinfo(BookData&);
 void cash_managing(void);
@@ -82,10 +86,9 @@ void sheeting(void);
 void system_exit(void);
 bool isempty(int i)
 {
- if ((books[i].bookTitle())[0]=='\0')
+ if (books[i].bookTitle(0)=='\0')
+ {return true;}
 	return false;
-	else
-		return true;
 }
 void blockchoose()
 {
@@ -165,18 +168,23 @@ void Bookinfo(BookData& book)
 }
 void lookUpBook(string a)
 {
+	Bookinfo(books[0]);
 	int i=0;
-	while(isempty(i))
+	while(!isempty(i))
 	{
 		if (books[i].bookTitle() == a)
+		{
 			break;
+         	}
 		i++;
 	}
+	cout<<i<<endl;
 	if (!books[i].isexist)
 	{
 		cout<<"没这本书0.0看看别的"<<endl;
 		return;
 	}//剩下的都是在馆的（理论上
+
 	Bookinfo(books[i]);
 }
 
@@ -212,7 +220,9 @@ int main()
     	i++;
     }//读取书库
     basic_ifstream.close();//关闭文件输入流
-	Bookinfo(books[0]);
+ lookUpBook(books[1].bookTitle());
+ Bookinfo(books[0]);
+ //cout<<(books[1].bookTitle())<<endl;
     blockchoose();//进入模块选择
     
 }
