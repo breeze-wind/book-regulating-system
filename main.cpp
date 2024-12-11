@@ -40,7 +40,7 @@ public:
     {
     	return booktitle[i];
     }
-	   string ISBN(void)
+	string ISBN(void)
     {
     	return isbn;
 	}
@@ -56,8 +56,6 @@ public:
     {
 	    return this -> Retail;
     }
-
-	
 private:
     string booktitle;
     string isbn;
@@ -76,49 +74,32 @@ BookData operator -(BookData& book,int a)
 	}
 	return book;
 }
-
-void bookfile_managing(void);
- BookData books[50];//书库容器
-void  lookUpBook(string);
-void Bookinfo(BookData&);
-void cash_managing(void);
-void sheeting(void);
-void system_exit(void);
+BookData books[50];//书库容器
 bool isempty(int i)
 {
  if (books[i].bookTitle(0)=='\0')
  {return true;}
 	return false;
 }
-void blockchoose()
+void lookUpBook(void);
+void blockchoose(void);
+void bookfile_managing(void);
+void deleteBook(void);
+void addBook(void);
+void editBook(void);
+void  lookUpBook(string);
+void Bookinfo(BookData&);
+void cash_managing(void);
+void sheeting(void);
+void system_exit(void);
+
+
+string operator+(const string& a,int b)
 {
-    cout<<"\t nuaa图书管理系统\t\n"<<"主菜单"<<endl<<"1.收银模块"<<endl<<"2.书库管理模块"<<endl<<"3.报表模块"<<endl<<"4.退出系统"<<endl;
-    cout<<"请输入1-4内数字来选择"<<endl;
-    int a=0;
-    cin>>a;
-	while(a<1||a>4)
-	{
-		cout<<"error:请输入1-4内数字"<<endl;
-		cin>>a;
-		 
-	 } 
-	 switch(a)
-	 {
-	 	case 1:
-	 		cash_managing();
-	 		break;
-	 	case 2:
-	 		bookfile_managing();
-	 		break;
-	 	case 3:
-	 		//sheeting();
-	 		break;
-	 	case 4:
-	 		//system_exit();
-	 		break;
-	 }
-	 
-}//
+	string s=a;
+	s[s.length()-1]+=b;
+	return s;
+}
 void cash_managing(void)
 {
 	string a;//isbn
@@ -188,28 +169,40 @@ void lookUpBook(string a)
 
 	Bookinfo(books[i]);
 }
-void sheeting(void)//报表模块 
-{
-	 cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t报表模块\t\t\n\n1.书库列表\n2.零售价列表\n3.返回到主菜单"<<endl;
-	 cout<<"输入选择";
-	 int a=0;
-	 cin>>a;
-	 switch(a)
-	 {
-	 	case 1: 
-	 }
-	  
-}
+// void sheeting(void)//报表模块
+// {
+// 	 cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t报表模块\t\t\n\n1.书库列表\n2.零售价列表\n3.返回到主菜单"<<endl;
+// 	 cout<<"输入选择";
+// 	 int a=0;
+// 	 cin>>a;
+// 	 switch(a)
+// 	 {
+// 	 	case 1:
+// 	 }
+//
+// }
 
 void bookfile_managing(void)
 {
-     cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t 书库管理模块\t\t\n\n1.书库列表\n2.零售价列表\n3.返回到主菜单"<<endl;
+     cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t 书库管理模块\t\t\n\n1.查找某本书的信息\n2.增加书\n3.修改书的信息\n4.删除书\n5.返回到主菜单"<<endl;
 	 cout<<"输入选择";
 	 int a=0;
 	 cin>>a;
 	 switch(a)
 	 {
-	 	case 1: 
+	 	case 1:lookUpBook();
+	 	break;
+	 	case 2:addBook();
+	 	break;
+	 	case 3:editBook();
+	 	break;
+	 	case 4:deleteBook();
+	 	break;
+	 	case 5:blockchoose();
+	 	break;
+	 	default:cout<<"error：请输入1-5之间的数"<<endl;
+	 	bookfile_managing();
+	 	return;
 	 }
 	  
 
@@ -229,7 +222,7 @@ int main()
     {
         cout<<"读取书库失败"<<endl;
         return 0;
-    }
+    }getline(basic_ifstream,title);
     while (basic_ifstream>>title>>isbn>>author>>qtyOnHand>>retail)
     {
         books[i].setTitle(title);
@@ -244,3 +237,102 @@ int main()
     blockchoose();//进入模块选择
     
 }
+void addBook(void)
+{string a;
+	cout<<"想加哪本书，输入书名：";
+	cin>>a;//存一下书名
+	int i=0;
+	while(!isempty(i))
+	{
+		if (books[i].bookTitle() == a)
+		{
+			break;
+		}
+		i++;
+	}
+	//	cout<<i<<endl;
+
+	if (!books[i].isexist)
+	{
+		books[i].setTitle(a);
+		string isbn=(books[i-1].ISBN())+1;
+		books[i].setISBN(isbn);
+		cout<<"输入作者：";
+		cin>>a;//正好string再存一下作者
+		books[i].setAuthor(a);
+		cout<<"\n输入售价：";
+		double sj;
+		cin>>sj;
+		books[i].setRetail(sj);
+		books[i].isexist=true;
+		cout<<"有几本？";
+		int qty;
+		cin>>qty;
+		books[i].setQty(qty);
+		bookfile_managing();
+	}
+
+}
+
+void editBook(void)
+{
+
+}
+void lookUpBook(void)
+{
+	cout<<"输入书名"<<endl;
+	string title;
+	cin>>title;
+	lookUpBook(title);
+	bookfile_managing();
+	return;
+}
+void system_exit(void)
+{
+	ofstream fout("D://code//clion//book regulating system//bookfile.txt");
+	if (!fout)
+	{
+		cout<<"读取书库失败,无法保存书库修改"<<endl;
+		blockchoose();
+		return;
+	}
+	int i=0;
+	fout<<"书名\tisbn\t\t作者\t库存\t售价"<<endl;
+	while (books[i].isexist)
+	{
+
+		fout<<books[i].bookTitle()<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookauthor()<<"\t"<<books[i].qtyOnHand()<<"\t"<<books[i].retail()<<endl;
+		i++;
+	}
+	fout.close();
+
+}//把程序里的再写进文件，并结束
+void blockchoose()
+{
+	cout<<"\t nuaa图书管理系统\t\n"<<"主菜单"<<endl<<"1.收银模块"<<endl<<"2.书库管理模块"<<endl<<"3.报表模块"<<endl<<"4.退出系统"<<endl;
+	cout<<"请输入1-4内数字来选择"<<endl;
+	int a=0;
+	cin>>a;
+	while(a<1||a>4)
+	{
+		cout<<"error:请输入1-4内数字"<<endl;
+		cin>>a;
+
+	}
+	switch(a)
+	{
+	case 1:
+		cash_managing();
+		break;
+	case 2:
+		bookfile_managing();
+		break;
+	case 3:
+		//sheeting();
+			break;
+	case 4:
+		system_exit();
+			break;
+	}
+
+}//
