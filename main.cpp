@@ -109,10 +109,10 @@ void cash_managing(void)
 	cin>>a;
 	int i;
 	i = 0;
-	while(isempty(i))
+	while(!isempty(i))
 	{
 		if (books[i].ISBN()==a)
-			break;
+		{break;}
 		i++;
 	}
 	if (!books[i].isexist)
@@ -126,6 +126,12 @@ void cash_managing(void)
 	cout<<books[i].qtyOnHand()<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookTitle()<<"\t"<<books[i].retail()<<"元\t"<<endl;
 	cout<<"数量\tISBN号\t书名\t单价\t金额"<<endl;
 	cin>>b;
+	if (b<0)
+	{
+		cout<<"error:请输入正整数"<<endl;
+		b=0;
+		return;
+	}
 	if (b>=books[i].qtyOnHand())
 	{
 		cout<<"库存不足T_T看看别的？"<<endl;
@@ -201,6 +207,7 @@ void bookfile_managing(void)
 	 	case 5:blockchoose();
 	 	break;
 	 	default:cout<<"error：请输入1-5之间的数"<<endl;
+	 	a=0;
 	 	bookfile_managing();
 	 	return;
 	 }
@@ -271,6 +278,10 @@ void addBook(void)
 		books[i].setQty(qty);
 		bookfile_managing();
 	}
+
+}
+void deleteBook()
+{
 
 }
 
