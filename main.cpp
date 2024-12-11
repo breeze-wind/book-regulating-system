@@ -31,7 +31,7 @@ public:
     {
         this->Retail = retail;
     }
-    bool isexist;
+    bool isexist;//标记书存不存在（关系到最后要不要写回去） 
     string bookTitle(void)
     {
     	return booktitle;
@@ -78,7 +78,7 @@ BookData operator -(BookData& book,int a)
 }
 
 void bookfile_managing(void);
-BookData books[50];//书库容器
+ BookData books[50];//书库容器
 void  lookUpBook(string);
 void Bookinfo(BookData&);
 void cash_managing(void);
@@ -159,6 +159,7 @@ void cash_managing(void)
 	cout<<"应付金额"<<fixed<<setprecision(2)<<b1*1.06<<endl;
 	cout<<"\n\n谢谢光临！";
 	books[i]-b;
+	 blockchoose();
 }
 void Bookinfo(BookData& book)
 {
@@ -168,7 +169,7 @@ void Bookinfo(BookData& book)
 }
 void lookUpBook(string a)
 {
-	Bookinfo(books[0]);
+//	Bookinfo(books[0]);
 	int i=0;
 	while(!isempty(i))
 	{
@@ -178,7 +179,7 @@ void lookUpBook(string a)
          	}
 		i++;
 	}
-	cout<<i<<endl;
+//	cout<<i<<endl;
 	if (!books[i].isexist)
 	{
 		cout<<"没这本书0.0看看别的"<<endl;
@@ -187,22 +188,42 @@ void lookUpBook(string a)
 
 	Bookinfo(books[i]);
 }
+void sheeting(void)//报表模块 
+{
+	 cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t报表模块\t\t\n\n1.书库列表\n2.零售价列表\n3.返回到主菜单"<<endl;
+	 cout<<"输入选择";
+	 int a=0;
+	 cin>>a;
+	 switch(a)
+	 {
+	 	case 1: 
+	 }
+	  
+}
 
 void bookfile_managing(void)
 {
+     cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t 书库管理模块\t\t\n\n1.书库列表\n2.零售价列表\n3.返回到主菜单"<<endl;
+	 cout<<"输入选择";
+	 int a=0;
+	 cin>>a;
+	 switch(a)
+	 {
+	 	case 1: 
+	 }
+	  
 
-
-}
+}//书库管理系统 
 
 int main()
 {
- BookData books[200];//书库容器
+ //BookData books[200];//书库容器
 	string title;
     string author;
     int qtyOnHand;
     double retail;
     string isbn;
-    ifstream basic_ifstream(R"(D:\code\clion\book regulating system\bookfile.txt)");
+    ifstream basic_ifstream("D://code//clion//book regulating system//bookfile.txt");
     int i=0;
     if (!basic_ifstream)
     {
@@ -220,9 +241,6 @@ int main()
     	i++;
     }//读取书库
     basic_ifstream.close();//关闭文件输入流
- lookUpBook(books[1].bookTitle());
- Bookinfo(books[0]);
- //cout<<(books[1].bookTitle())<<endl;
     blockchoose();//进入模块选择
     
 }
