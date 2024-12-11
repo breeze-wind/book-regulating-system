@@ -130,7 +130,8 @@ void cash_managing(void)
 	{
 		cout<<"error:请输入正整数"<<endl;
 		b=0;
-		return;
+		cash_managing();
+
 	}
 	if (b>=books[i].qtyOnHand())
 	{
