@@ -2,6 +2,7 @@
 #include <cstring>
 #include <fstream>
 #include <iomanip>
+#include <cstdlib>
 using namespace std;
 class BookData
 {
@@ -80,26 +81,226 @@ bool isempty(int i)
  if (books[i].bookTitle(0)=='\0')
  {return true;}
 	return false;
-}
-void lookUpBook(void);
-void blockchoose(void);
-void bookfile_managing(void);
-void deleteBook(void);
-void addBook(void);
-void editBook(void);
-void  lookUpBook(string);
-void Bookinfo(BookData&);
-void cash_managing(void);
-void sheeting(void);
-void system_exit(void);
-
+}//判断文件名第一个字符空不空，空说明未曾写入（与isexist不同）
+void lookUpBook(void);//输出相应提示词，存书名并调lookupbook（string）
+void blockchoose(void);//主页面模块选择
+void bookfile_managing(void);//书库信息管理
+void deleteBook(void);//书记删除
+void addBook(void);//添加书籍
+void editBook(void);//书籍信息编辑
+void lookUpBook(string);//查找书名并调用bookinfo
+void Bookinfo(BookData&);//书籍信息展示
+void cash_managing(void);//收银模块
+void sheeting(void);//报表模块
+void system_exit(void);//退出并记录在书库文件
+void pause(void);//按下任意键继续
+bool make_sure(void);
 
 string operator+(const string& a,int b)
 {
 	string s=a;
 	s[s.length()-1]+=b;
+	if (s[s.length()-1]>'9')
+	{
+		s[s.length()-1]=s[s.length()-1]-10;
+		s[s.length()-2]+=1;
+	}
 	return s;
+}//字符串加int自动加在最后一位,可进1位
+
+//---------------------------------------------------------
+
+int main()
+{
+ //BookData books[200];//书库容器
+	string title;
+    string author;
+    int qtyOnHand;
+    double retail;
+    string isbn;
+    ifstream basic_ifstream("D://code//clion//book regulating system//bookfile.txt");
+    int i=0;
+    if (!basic_ifstream)
+    {
+        cout<<"读取书库失败"<<endl;
+        return 0;
+    }getline(basic_ifstream,title);
+    while (basic_ifstream>>title>>isbn>>author>>qtyOnHand>>retail)
+    {
+        books[i].setTitle(title);
+        books[i].setAuthor(author);
+        books[i].setQty(qtyOnHand);
+        books[i].setISBN(isbn);
+        books[i].setRetail(retail);
+    	books[i].isexist=true;
+    	i++;
+    }//读取书库
+    basic_ifstream.close();//关闭文件输入流
+    blockchoose();//进入模块选择
+    
 }
+void addBook(void)
+{string a;
+	cout<<"想加哪本书，输入书名：";
+	cin>>a;//存一下书名
+	int i=0;
+	while(!isempty(i))
+	{
+		if (books[i].bookTitle() == a)
+		{
+			break;
+		}
+		i++;
+	}
+	//	cout<<i<<endl;
+
+	if (!books[i].isexist)
+	{
+		books[i].setTitle(a);
+		string isbn=(books[i-1].ISBN())+1;
+		books[i].setISBN(isbn);
+		cout<<"输入作者：";
+		cin>>a;//正好string再存一下作者
+		books[i].setAuthor(a);
+		cout<<"\n输入售价：";
+		double sj;
+		cin>>sj;
+		books[i].setRetail(sj);
+		books[i].isexist=true;
+		cout<<"有几本？";
+		int qty;
+		cin>>qty;
+		books[i].setQty(qty);
+		pause();
+		bookfile_managing();
+	}
+  else
+  {
+  	cout<<"已经有这本书了"<<endl;
+  	Bookinfo(books[i]);
+  	pause();
+  	bookfile_managing();
+  }
+}
+void deleteBook()
+{
+	cout<<"要删除哪本书？"<<endl;
+	string a;
+	cin>>a;
+	int i=0;
+	while(!isempty(i))
+	{
+		if (books[i].bookTitle() == a)
+		{
+			break;
+		}
+		i++;
+	}
+	if (books[i].isexist)
+	{
+		Bookinfo(books[i]);
+		cout<<"确认删除这本书吗"<<endl;
+		make_sure();
+		books[i].isexist=false;
+	}
+	else
+	{
+		cout<<"书库里没有这本书"<<endl;
+		pause();
+		bookfile_managing();
+	}
+}
+
+void editBook(void)
+{
+	cout<<"要编辑哪本书？"<<endl;
+    string a;
+	cin>>a;
+	int i=0;
+	while(!isempty(i))
+	{
+		if (books[i].bookTitle() == a)
+		{
+			break;
+		}
+		i++;
+	}
+	if (books[i].isexist)
+	{
+		Bookinfo(books[i]);
+	}
+	else
+	{
+		cout<<"书库里没有这本书"<<endl;
+		pause();
+		bookfile_managing();
+	}
+}
+void lookUpBook(void)
+{
+	cout<<"输入书名"<<endl;
+	string title;
+	cin>>title;
+	lookUpBook(title);
+	pause();
+	bookfile_managing();
+	return;
+}
+void system_exit(void)
+{
+	ofstream fout("D://code//clion//book regulating system//bookfile.txt");
+	if (!fout)
+	{
+		cout<<"读取书库失败,无法保存书库修改"<<endl;
+		blockchoose();
+		return;
+	}
+	int i=0;
+	fout<<"书名\tisbn\t\t作者\t库存\t售价"<<endl;
+	while (books[i].isexist)
+	{
+
+		fout<<books[i].bookTitle()<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookauthor()<<"\t"<<books[i].qtyOnHand()<<"\t"<<books[i].retail()<<endl;
+		i++;
+	}
+	fout.close();
+
+}//把程序里的再写进文件，并结束
+void blockchoose()
+{
+	cout<<"\t nuaa图书管理系统\t\n"<<"主菜单"<<endl<<"1.收银模块"<<endl<<"2.书库管理模块"<<endl<<"3.报表模块"<<endl<<"4.退出系统"<<endl;
+	cout<<"请输入1-4内数字来选择"<<endl;
+	string a;
+	cin>>a;
+	while(a<"1"||a>"4")
+	{
+		cout<<"error:请输入1-4内数字"<<endl;
+		cin>>a;
+
+	}
+	switch(a[0])
+	{
+	case '1':
+		cash_managing();
+		break;
+	case '2':
+		bookfile_managing();
+		break;
+	case '3':
+		//sheeting();
+			break;
+	case '4':
+		system_exit();
+			break;
+	}
+
+}//
+void pause(void)
+{
+	cout<<endl;
+	system("pause");
+}
+
 void cash_managing(void)
 {
 	string a;//isbn
@@ -114,11 +315,18 @@ void cash_managing(void)
 		if (books[i].ISBN()==a)
 		{break;}
 		i++;
+	}\
+	if (isempty(i))
+	{
+		cout<<"书库里没有这本书"<<endl;
+		pause();
+		blockchoose();
 	}
 	if (!books[i].isexist)
 	{
 		cout<<"卖光了T_T  看看别的吧"<<endl;
-		 cash_managing();
+		 pause();
+		blockchoose();
 		return;
 	}
 	cout<<"日期："<<__DATE__<<endl;
@@ -209,142 +417,18 @@ void bookfile_managing(void)
 	 	break;
 	 	default:cout<<"error：请输入1-5之间的数"<<endl;
 	 	a=0;
+	 	pause();
 	 	bookfile_managing();
 	 	return;
 	 }
-	  
 
-}//书库管理系统 
 
-int main()
+}//书库管理系统
+bool make_sure(void)
 {
- //BookData books[200];//书库容器
-	string title;
-    string author;
-    int qtyOnHand;
-    double retail;
-    string isbn;
-    ifstream basic_ifstream("D://code//clion//book regulating system//bookfile.txt");
-    int i=0;
-    if (!basic_ifstream)
-    {
-        cout<<"读取书库失败"<<endl;
-        return 0;
-    }getline(basic_ifstream,title);
-    while (basic_ifstream>>title>>isbn>>author>>qtyOnHand>>retail)
-    {
-        books[i].setTitle(title);
-        books[i].setAuthor(author);
-        books[i].setQty(qtyOnHand);
-        books[i].setISBN(isbn);
-        books[i].setRetail(retail);
-    	books[i].isexist=true;
-    	i++;
-    }//读取书库
-    basic_ifstream.close();//关闭文件输入流
-    blockchoose();//进入模块选择
-    
-}
-void addBook(void)
-{string a;
-	cout<<"想加哪本书，输入书名：";
-	cin>>a;//存一下书名
-	int i=0;
-	while(!isempty(i))
-	{
-		if (books[i].bookTitle() == a)
-		{
-			break;
-		}
-		i++;
-	}
-	//	cout<<i<<endl;
-
-	if (!books[i].isexist)
-	{
-		books[i].setTitle(a);
-		string isbn=(books[i-1].ISBN())+1;
-		books[i].setISBN(isbn);
-		cout<<"输入作者：";
-		cin>>a;//正好string再存一下作者
-		books[i].setAuthor(a);
-		cout<<"\n输入售价：";
-		double sj;
-		cin>>sj;
-		books[i].setRetail(sj);
-		books[i].isexist=true;
-		cout<<"有几本？";
-		int qty;
-		cin>>qty;
-		books[i].setQty(qty);
-		bookfile_managing();
-	}
-
-}
-void deleteBook()
-{
-
-}
-
-void editBook(void)
-{
-
-}
-void lookUpBook(void)
-{
-	cout<<"输入书名"<<endl;
-	string title;
-	cin>>title;
-	lookUpBook(title);
-	bookfile_managing();
-	return;
-}
-void system_exit(void)
-{
-	ofstream fout("D://code//clion//book regulating system//bookfile.txt");
-	if (!fout)
-	{
-		cout<<"读取书库失败,无法保存书库修改"<<endl;
-		blockchoose();
-		return;
-	}
-	int i=0;
-	fout<<"书名\tisbn\t\t作者\t库存\t售价"<<endl;
-	while (books[i].isexist)
-	{
-
-		fout<<books[i].bookTitle()<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookauthor()<<"\t"<<books[i].qtyOnHand()<<"\t"<<books[i].retail()<<endl;
-		i++;
-	}
-	fout.close();
-
-}//把程序里的再写进文件，并结束
-void blockchoose()
-{
-	cout<<"\t nuaa图书管理系统\t\n"<<"主菜单"<<endl<<"1.收银模块"<<endl<<"2.书库管理模块"<<endl<<"3.报表模块"<<endl<<"4.退出系统"<<endl;
-	cout<<"请输入1-4内数字来选择"<<endl;
-	int a=0;
+	string a;
 	cin>>a;
-	while(a<1||a>4)
-	{
-		cout<<"error:请输入1-4内数字"<<endl;
-		cin>>a;
-
-	}
-	switch(a)
-	{
-	case 1:
-		cash_managing();
-		break;
-	case 2:
-		bookfile_managing();
-		break;
-	case 3:
-		//sheeting();
-			break;
-	case 4:
-		system_exit();
-			break;
-	}
-
-}//
+	if (a=="1")
+		return 1;
+	else return 2;
+}
