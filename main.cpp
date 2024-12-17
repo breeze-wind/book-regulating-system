@@ -1,35 +1,35 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <cstring>
 #include <fstream>
 #include <iomanip>
 #include <cstdlib>
 #include "BookData.h"
+#include <windows.h>
 using namespace std;
 
-BookData books[50];//Êé¿âÈİÆ÷
+BookData books[50];//ä¹¦åº“å®¹å™¨
 bool isempty(int i)
 {
  if (books[i].bookTitle(0)=='\0')
  {return true;}
 	return false;
-}//ÅĞ¶ÏÎÄ¼şÃûµÚÒ»¸ö×Ö·û¿Õ²»¿Õ£¬¿ÕËµÃ÷Î´ÔøĞ´Èë£¨Óëisexist²»Í¬£©
-void LookUpBook(void);//Êä³öÏàÓ¦ÌáÊ¾´Ê£¬´æÊéÃû²¢µ÷lookupbook£¨string£©
-void blockchoose(void);//Ö÷Ò³ÃæÄ£¿éÑ¡Ôñ
-void bookfile_managing(void);//Êé¿âĞÅÏ¢¹ÜÀí
-void deleteBook(void);//Êé¼ÇÉ¾³ı
-void addBook(void);//Ìí¼ÓÊé¼®
-void Edit_Book(void);//Êé¼®ĞÅÏ¢±à¼­
-void LookUpBook(string);//²éÕÒÊéÃû²¢µ÷ÓÃbookinfo
-void Bookinfo(BookData&);//Êé¼®ĞÅÏ¢Õ¹Ê¾
-void cash_managing(void);//ÊÕÒøÄ£¿é
-void sheeting(void);//±¨±íÄ£¿é
-void system_exit(void);//ÍË³ö²¢¼ÇÂ¼ÔÚÊé¿âÎÄ¼ş
-void pause(void);//°´ÏÂÈÎÒâ¼ü¼ÌĞø
+}//åˆ¤æ–­æ–‡ä»¶åç¬¬ä¸€ä¸ªå­—ç¬¦ç©ºä¸ç©ºï¼Œç©ºè¯´æ˜æœªæ›¾å†™å…¥ï¼ˆä¸isexistä¸åŒï¼‰
+void LookUpBook(void);//è¾“å‡ºç›¸åº”æç¤ºè¯ï¼Œå­˜ä¹¦åå¹¶è°ƒlookupbookï¼ˆstringï¼‰
+void blockchoose(void);//ä¸»é¡µé¢æ¨¡å—é€‰æ‹©
+void bookfile_managing(void);//ä¹¦åº“ä¿¡æ¯ç®¡ç†
+void deleteBook(void);//ä¹¦è®°åˆ é™¤
+void addBook(void);//æ·»åŠ ä¹¦ç±
+void Edit_Book(void);//ä¹¦ç±ä¿¡æ¯ç¼–è¾‘
+void LookUpBook(string);//æŸ¥æ‰¾ä¹¦åå¹¶è°ƒç”¨bookinfo
+void Bookinfo(BookData&);//ä¹¦ç±ä¿¡æ¯å±•ç¤º
+void cash_managing(void);//æ”¶é“¶æ¨¡å—
+void sheeting(void);//æŠ¥è¡¨æ¨¡å—
+void system_exit(void);//é€€å‡ºå¹¶è®°å½•åœ¨ä¹¦åº“æ–‡ä»¶
+void pause(void);//æŒ‰ä¸‹ä»»æ„é”®ç»§ç»­
 void Edit_Book(BookData&);
-bool make_sure(void);//ÊäÈë1·µ»Ø1
-void read_file(void);//¶ÁÈ¡Êé¿â
-bool doubleused_title(void);
-bool doubleused_isbn(void);
+bool make_sure(void);//è¾“å…¥1è¿”å›1
+void read_file(void);//è¯»å–ä¹¦åº“
+
 BookData operator -(BookData& book,int a);
 
 string operator+(const string& a,int b)
@@ -42,22 +42,23 @@ string operator+(const string& a,int b)
 		s[s.length()-2]+=1;
 	}
 	return s;
-}//×Ö·û´®¼Óint×Ô¶¯¼ÓÔÚ×îºóÒ»Î»,¿É½ø1Î»
+}//å­—ç¬¦ä¸²åŠ intè‡ªåŠ¨åŠ åœ¨æœ€åä¸€ä½,å¯è¿›1ä½
 
 //---------------------------------------------------------
 
 int main()
 {
- //BookData books[200];//Êé¿âÈİÆ÷
+	SetConsoleOutputCP(CP_UTF8);
+ //BookData books[200];//ä¹¦åº“å®¹å™¨
 	read_file();
 
-    blockchoose();//½øÈëÄ£¿éÑ¡Ôñ
+    blockchoose();//è¿›å…¥æ¨¡å—é€‰æ‹©
     
 }
 void addBook(void)
 {string a;
-	cout<<"Ïë¼ÓÄÄ±¾Êé£¬ÊäÈëÊéÃû£º";
-	cin>>a;//´æÒ»ÏÂÊéÃû
+	cout<<"æƒ³åŠ å“ªæœ¬ä¹¦ï¼Œè¾“å…¥ä¹¦åï¼š";
+	cin>>a;//å­˜ä¸€ä¸‹ä¹¦å
 	int i=0;
 	while(!isempty(i))
 	{
@@ -74,15 +75,15 @@ void addBook(void)
 		books[i].setTitle(a);
 		string isbn=(books[i-1].ISBN())+1;
 		books[i].setISBN(isbn);
-		cout<<"ÊäÈë×÷Õß£º";
-		cin>>a;//ÕıºÃstringÔÙ´æÒ»ÏÂ×÷Õß
+		cout<<"è¾“å…¥ä½œè€…ï¼š";
+		cin>>a;//æ­£å¥½stringå†å­˜ä¸€ä¸‹ä½œè€…
 		books[i].setAuthor(a);
-		cout<<"\nÊäÈëÊÛ¼Û£º";
+		cout<<"\nè¾“å…¥å”®ä»·ï¼š";
 		double sj;
 		cin>>sj;
 		books[i].setRetail(sj);
 		books[i].isexist=true;
-		cout<<"ÓĞ¼¸±¾£¿";
+		cout<<"æœ‰å‡ æœ¬ï¼Ÿ";
 		int qty;
 		cin>>qty;
 		books[i].setQty(qty);
@@ -91,7 +92,7 @@ void addBook(void)
 	}
   else
   {
-  	cout<<"ÒÑ¾­ÓĞÕâ±¾ÊéÁË"<<endl;
+  	cout<<"å·²ç»æœ‰è¿™æœ¬ä¹¦äº†"<<endl;
   	Bookinfo(books[i]);
   	pause();
   	bookfile_managing();
@@ -99,7 +100,7 @@ void addBook(void)
 }
 void deleteBook()
 {
-	cout<<"ÒªÉ¾³ıÄÄ±¾Êé£¿"<<endl;
+	cout<<"è¦åˆ é™¤å“ªæœ¬ä¹¦ï¼Ÿ"<<endl;
 	string a;
 	cin>>a;
 	int i=0;
@@ -114,18 +115,18 @@ void deleteBook()
 	if (books[i].isexist)
 	{
 		Bookinfo(books[i]);
-		cout<<"È·ÈÏÉ¾³ıÕâ±¾ÊéÂğ"<<endl;
+		cout<<"ç¡®è®¤åˆ é™¤è¿™æœ¬ä¹¦å—"<<endl;
 		if (make_sure())
 		books[i].isexist=false;
 		else
 		{
-			cout<<"ÒÑÈ¡ÏûÉ¾³ı"<<endl;
+			cout<<"å·²å–æ¶ˆåˆ é™¤"<<endl;
 		}
 
 	}
 	else
 	{
-		cout<<"Êé¿âÀïÃ»ÓĞÕâ±¾Êé"<<endl;
+		cout<<"ä¹¦åº“é‡Œæ²¡æœ‰è¿™æœ¬ä¹¦"<<endl;
 
 	}
 	pause();
@@ -134,7 +135,7 @@ void deleteBook()
 
 void Edit_Book(void)
 {
-	cout<<"Òª±à¼­ÄÄ±¾Êé£¿"<<endl;
+	cout<<"è¦ç¼–è¾‘å“ªæœ¬ä¹¦ï¼Ÿ"<<endl;
     string a;
 	cin>>a;
 	int i=0;
@@ -149,7 +150,7 @@ void Edit_Book(void)
 	if (books[i].isexist)
 	{
 		Bookinfo(books[i]);
-		cout<<"È·ÈÏĞŞ¸ÄÕâ±¾ÊéÂğ"<<endl;
+		cout<<"ç¡®è®¤ä¿®æ”¹è¿™æœ¬ä¹¦å—"<<endl;
 		if (make_sure())
 		{
 			Edit_Book(books[i]);
@@ -157,14 +158,14 @@ void Edit_Book(void)
 	}
 	else
 	{
-		cout<<"Êé¿âÀïÃ»ÓĞÕâ±¾Êé"<<endl;
+		cout<<"ä¹¦åº“é‡Œæ²¡æœ‰è¿™æœ¬ä¹¦"<<endl;
 		pause();
 		bookfile_managing();
 	}
 }
 void LookUpBook(void)
 {
-	cout<<"ÊäÈëÊéÃû"<<endl;
+	cout<<"è¾“å…¥ä¹¦å"<<endl;
 	string title;
 	cin>>title;
 	LookUpBook(title);
@@ -177,12 +178,12 @@ void system_exit(void)
 	ofstream fout("D://code//clion//book regulating system//bookfile.txt");
 	if (!fout)
 	{
-		cout<<"¶ÁÈ¡Êé¿âÊ§°Ü,ÎŞ·¨±£´æÊé¿âĞŞ¸Ä"<<endl;
+		cout<<"è¯»å–ä¹¦åº“å¤±è´¥,æ— æ³•ä¿å­˜ä¹¦åº“ä¿®æ”¹"<<endl;
 		blockchoose();
 		return;
 	}
 	int i=0;
-	fout<<"ÊéÃû\tisbn\t\t×÷Õß\t¿â´æ\tÊÛ¼Û"<<endl;
+	fout<<"ä¹¦å\tisbn\t\tä½œè€…\tåº“å­˜\tå”®ä»·"<<endl;
 	while (books[i].isexist)
 	{
 
@@ -191,16 +192,16 @@ void system_exit(void)
 	}
 	fout.close();
 
-}//°Ñ³ÌĞòÀïµÄÔÙĞ´½øÎÄ¼ş£¬²¢½áÊø
+}//æŠŠç¨‹åºé‡Œçš„å†å†™è¿›æ–‡ä»¶ï¼Œå¹¶ç»“æŸ
 void blockchoose()
 {
-	cout<<"\t nuaaÍ¼Êé¹ÜÀíÏµÍ³\t\n"<<"Ö÷²Ëµ¥"<<endl<<"1.ÊÕÒøÄ£¿é"<<endl<<"2.Êé¿â¹ÜÀíÄ£¿é"<<endl<<"3.±¨±íÄ£¿é"<<endl<<"4.ÍË³öÏµÍ³"<<endl;
-	cout<<"ÇëÊäÈë1-4ÄÚÊı×ÖÀ´Ñ¡Ôñ"<<endl;
+	cout<<"\t nuaaå›¾ä¹¦ç®¡ç†ç³»ç»Ÿ\t\n"<<"ä¸»èœå•"<<endl<<"1.æ”¶é“¶æ¨¡å—"<<endl<<"2.ä¹¦åº“ç®¡ç†æ¨¡å—"<<endl<<"3.æŠ¥è¡¨æ¨¡å—"<<endl<<"4.é€€å‡ºç³»ç»Ÿ"<<endl;
+	cout<<"è¯·è¾“å…¥1-4å†…æ•°å­—æ¥é€‰æ‹©"<<endl;
 	string a;
 	cin>>a;
 	while(a<"1"||a>"4")
 	{
-		cout<<"error:ÇëÊäÈë1-4ÄÚÊı×Ö"<<endl;
+		cout<<"error:è¯·è¾“å…¥1-4å†…æ•°å­—"<<endl;
 		cin>>a;
 
 	}
@@ -230,9 +231,9 @@ void pause(void)
 void cash_managing(void)
 {
 	string a;//isbn
-	int b=0;//ÊıÁ¿
-	cout<<"\tÇ°Ì¨ÏúÊÛÄ£¿é\t"<<endl;
-	cout<<"ÊäÈëÏëÂòµÄÊéISBN"<<endl;
+	int b=0;//æ•°é‡
+	cout<<"\tå‰å°é”€å”®æ¨¡å—\t"<<endl;
+	cout<<"è¾“å…¥æƒ³ä¹°çš„ä¹¦ISBN"<<endl;
 	cin>>a;
 	int i;
 	i = 0;
@@ -244,49 +245,49 @@ void cash_managing(void)
 	}\
 	if (isempty(i))
 	{
-		cout<<"Êé¿âÀïÃ»ÓĞÕâ±¾Êé"<<endl;
+		cout<<"ä¹¦åº“é‡Œæ²¡æœ‰è¿™æœ¬ä¹¦"<<endl;
 		pause();
 		blockchoose();
 	}
 	if (!books[i].isexist)
 	{
-		cout<<"Âô¹âÁËT_T  ¿´¿´±ğµÄ°É"<<endl;
+		cout<<"å–å…‰äº†T_T  çœ‹çœ‹åˆ«çš„å§"<<endl;
 		 pause();
 		blockchoose();
 		return;
 	}
-	cout<<"ÈÕÆÚ£º"<<__DATE__<<endl;
-	cout<<"¿â´æÊıÁ¿\tISBNºÅ\tÊéÃû\tµ¥¼Û"<<endl;
-	cout<<books[i].qtyOnHand()<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookTitle()<<"\t"<<books[i].retail()<<"Ôª\t"<<endl;
-	cout<<"ÊıÁ¿\tISBNºÅ\tÊéÃû\tµ¥¼Û\t½ğ¶î"<<endl;
+	cout<<"æ—¥æœŸï¼š"<<__DATE__<<endl;
+	cout<<"åº“å­˜æ•°é‡\tISBNå·\tä¹¦å\tå•ä»·"<<endl;
+	cout<<books[i].qtyOnHand()<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookTitle()<<"\t"<<books[i].retail()<<"å…ƒ\t"<<endl;
+	cout<<"æ•°é‡\tISBNå·\tä¹¦å\tå•ä»·\té‡‘é¢"<<endl;
 	cin>>b;
 	if (b<0)
 	{
-		cout<<"error:ÇëÊäÈëÕıÕûÊı"<<endl;
+		cout<<"error:è¯·è¾“å…¥æ­£æ•´æ•°"<<endl;
 		b=0;
 		cash_managing();
 
 	}
 	if (b>=books[i].qtyOnHand())
 	{
-		cout<<"¿â´æ²»×ãT_T¿´¿´±ğµÄ£¿"<<endl;
+		cout<<"åº“å­˜ä¸è¶³T_Tçœ‹çœ‹åˆ«çš„ï¼Ÿ"<<endl;
 		cash_managing();
 		return;
 	}
 	double b1 = b*(books[i].retail());
-	cout<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookTitle()<<"\t"<<books[i].retail()<<"Ôª\t"<<b1<<"Ôª\t"<<endl;
+	cout<<"\t"<<books[i].ISBN()<<"\t"<<books[i].bookTitle()<<"\t"<<books[i].retail()<<"å…ƒ\t"<<b1<<"å…ƒ\t"<<endl;
 	cout<<"----------------------------------------------"<<endl;
-	cout<<"ÏúÊÛºÏ¼Æ:RMB "<<b1<<endl;
-	cout<<"ÁãÊÛË°"<<fixed<<setprecision(2)<<b1*0.06<<endl;
-	cout<<"Ó¦¸¶½ğ¶î"<<fixed<<setprecision(2)<<b1*1.06<<endl;
-	cout<<"\n\nĞ»Ğ»¹âÁÙ£¡";
+	cout<<"é”€å”®åˆè®¡:RMB "<<b1<<endl;
+	cout<<"é›¶å”®ç¨"<<fixed<<setprecision(2)<<b1*0.06<<endl;
+	cout<<"åº”ä»˜é‡‘é¢"<<fixed<<setprecision(2)<<b1*1.06<<endl;
+	cout<<"\n\nè°¢è°¢å…‰ä¸´ï¼";
 	books[i]-b;
 	 blockchoose();
 }
 void Bookinfo(BookData& book)
 {
 	cout<<"--------------------------------------------------------------------";
-	cout<<"\n\tnuaaÍ¼Êé¹ÜÀíÏµÍ³\t\n\t\tÊéµÄ×ÊÁÏ\t\nISBNºÅ£º"<<book.ISBN()<<"\nÊé Ãû£º"<<book.bookTitle()<<"\n¿â´æÁ¿£º"<<book.qtyOnHand()<<"\nÁãÊÛ¼Û£º"<<book.retail()<<"\n×÷Õß£º"<<book.bookauthor()<<endl;
+	cout<<"\n\tnuaaå›¾ä¹¦ç®¡ç†ç³»ç»Ÿ\t\n\t\tä¹¦çš„èµ„æ–™\t\nISBNå·ï¼š"<<book.ISBN()<<"\nä¹¦ åï¼š"<<book.bookTitle()<<"\nåº“å­˜é‡ï¼š"<<book.qtyOnHand()<<"\né›¶å”®ä»·ï¼š"<<book.retail()<<"\nä½œè€…ï¼š"<<book.bookauthor()<<endl;
 	cout<<"--------------------------------------------------------------------";
 }
 void LookUpBook(string a)
@@ -304,16 +305,16 @@ void LookUpBook(string a)
 //	cout<<i<<endl;
 	if (!books[i].isexist)
 	{
-		cout<<"Ã»Õâ±¾Êé0.0¿´¿´±ğµÄ"<<endl;
+		cout<<"æ²¡è¿™æœ¬ä¹¦0.0çœ‹çœ‹åˆ«çš„"<<endl;
 		return;
-	}//Ê£ÏÂµÄ¶¼ÊÇÔÚ¹İµÄ£¨ÀíÂÛÉÏ
+	}//å‰©ä¸‹çš„éƒ½æ˜¯åœ¨é¦†çš„ï¼ˆç†è®ºä¸Š
 
 	Bookinfo(books[i]);
 }
-// void sheeting(void)//±¨±íÄ£¿é
+// void sheeting(void)//æŠ¥è¡¨æ¨¡å—
 // {
-// 	 cout<<"\t\t\tnuaaÍ¼Êé¹ÜÀíÏµÍ³\t\t\n\t\t\t±¨±íÄ£¿é\t\t\n\n1.Êé¿âÁĞ±í\n2.ÁãÊÛ¼ÛÁĞ±í\n3.·µ»Øµ½Ö÷²Ëµ¥"<<endl;
-// 	 cout<<"ÊäÈëÑ¡Ôñ";
+// 	 cout<<"\t\t\tnuaaå›¾ä¹¦ç®¡ç†ç³»ç»Ÿ\t\t\n\t\t\tæŠ¥è¡¨æ¨¡å—\t\t\n\n1.ä¹¦åº“åˆ—è¡¨\n2.é›¶å”®ä»·åˆ—è¡¨\n3.è¿”å›åˆ°ä¸»èœå•"<<endl;
+// 	 cout<<"è¾“å…¥é€‰æ‹©";
 // 	 int a=0;
 // 	 cin>>a;
 // 	 switch(a)
@@ -325,8 +326,8 @@ void LookUpBook(string a)
 
 void bookfile_managing(void)
 {
-     cout<<"\t\t\tnuaaÍ¼Êé¹ÜÀíÏµÍ³\t\t\n\t\t\t Êé¿â¹ÜÀíÄ£¿é\t\t\n\n1.²éÕÒÄ³±¾ÊéµÄĞÅÏ¢\n2.Ôö¼ÓÊé\n3.ĞŞ¸ÄÊéµÄĞÅÏ¢\n4.É¾³ıÊé\n5.·µ»Øµ½Ö÷²Ëµ¥"<<endl;
-	 cout<<"ÊäÈëÑ¡Ôñ";
+     cout<<"\t\t\tnuaaå›¾ä¹¦ç®¡ç†ç³»ç»Ÿ\t\t\n\t\t\t ä¹¦åº“ç®¡ç†æ¨¡å—\t\t\n\n1.æŸ¥æ‰¾æŸæœ¬ä¹¦çš„ä¿¡æ¯\n2.å¢åŠ ä¹¦\n3.ä¿®æ”¹ä¹¦çš„ä¿¡æ¯\n4.åˆ é™¤ä¹¦\n5.è¿”å›åˆ°ä¸»èœå•"<<endl;
+	 cout<<"è¾“å…¥é€‰æ‹©";
 	 int a=0;
 	 cin>>a;
 	 switch(a)
@@ -341,7 +342,7 @@ void bookfile_managing(void)
 	 	break;
 	 	case 5:blockchoose();
 	 	break;
-	 	default:cout<<"error£ºÇëÊäÈë1-5Ö®¼äµÄÊı"<<endl;
+	 	default:cout<<"errorï¼šè¯·è¾“å…¥1-5ä¹‹é—´çš„æ•°"<<endl;
 	 	a=0;
 	 	pause();
 	 	bookfile_managing();
@@ -349,11 +350,11 @@ void bookfile_managing(void)
 	 }
 
 
-}//Êé¿â¹ÜÀíÏµÍ³
+}//ä¹¦åº“ç®¡ç†ç³»ç»Ÿ
 bool make_sure(void)
 {
 	string a;
-	cout<<"ÊäÈë1´ú±íÈ·ÈÏ"<<endl;
+	cout<<"è¾“å…¥1ä»£è¡¨ç¡®è®¤"<<endl;
 
 	cin>>a;
 	if (a=="1")
@@ -362,43 +363,43 @@ bool make_sure(void)
 }
 void Edit_Book(BookData& book)
 {
-	cout<<"\n\tÊé¼®±à¼­½çÃæ\t\n1.ĞŞ¸Ä±êÌâ\n2.ĞŞ¸Äisbn\n3.ĞŞ¸Ä×÷Õß\n4.ĞŞ¸ÄÊÛ¼Û\n5.ĞŞ¸Ä¿â´æ\n6.·µ»ØÉÏÒ»¼¶"<<endl;
+	cout<<"\n\tä¹¦ç±ç¼–è¾‘ç•Œé¢\t\n1.ä¿®æ”¹æ ‡é¢˜\n2.ä¿®æ”¹isbn\n3.ä¿®æ”¹ä½œè€…\n4.ä¿®æ”¹å”®ä»·\n5.ä¿®æ”¹åº“å­˜\n6.è¿”å›ä¸Šä¸€çº§"<<endl;
 	string a;
 	cin>>a;
 	string b;
 	switch(a[0])
 	{
 	case '1':
-		   cout<<"Ô­±êÌâ£º"<<book.bookTitle()<<endl;
-		   cout<<"ÇëÊäÈëĞŞ¸ÄºóµÄ±êÌâ"<<endl;
+		   cout<<"åŸæ ‡é¢˜ï¼š"<<book.bookTitle()<<endl;
+		   cout<<"è¯·è¾“å…¥ä¿®æ”¹åçš„æ ‡é¢˜"<<endl;
 		   ;
 		   cin>>b;
 		   book.setTitle(b);
-		   cout<<"ÒÑĞŞ¸Ä±êÌâÎª"<<book.bookTitle()<<endl;
+		   cout<<"å·²ä¿®æ”¹æ ‡é¢˜ä¸º"<<book.bookTitle()<<endl;
 		  break;
 	case '2':
-		cout<<"Ô­isbn£º"<<book.ISBN()<<endl;
-		cout<<"ÇëÊäÈëĞŞ¸ÄºóµÄisbn"<<endl;
+		cout<<"åŸisbnï¼š"<<book.ISBN()<<endl;
+		cout<<"è¯·è¾“å…¥ä¿®æ”¹åçš„isbn"<<endl;
 
 		cin>>b;
 		book.setISBN(b);
-		cout<<"ÒÑĞŞ¸ÄisbnÎª"<<book.ISBN()<<endl;
+		cout<<"å·²ä¿®æ”¹isbnä¸º"<<book.ISBN()<<endl;
 		break;
 
 	case '3':
-		cout<<"Ô­×÷Õß£º"<<book.bookauthor()<<endl;
-		cout<<"ÇëÊäÈëĞŞ¸ÄºóµÄ×÷Õß"<<endl;
+		cout<<"åŸä½œè€…ï¼š"<<book.bookauthor()<<endl;
+		cout<<"è¯·è¾“å…¥ä¿®æ”¹åçš„ä½œè€…"<<endl;
 		cin>>b;
 		book.setAuthor(b);
-		cout<<"ÒÑĞŞ¸Ä×÷ÕßÎª"<<book.bookauthor()<<endl;
+		cout<<"å·²ä¿®æ”¹ä½œè€…ä¸º"<<book.bookauthor()<<endl;
 		break;
 	case '4':
-		cout<<"Ô­ÊÛ¼Û£º"<<book.retail()<<endl;
-		cout<<"ÇëÊäÈëĞŞ¸ÄºóµÄÊÛ¼Û"<<endl;
+		cout<<"åŸå”®ä»·ï¼š"<<book.retail()<<endl;
+		cout<<"è¯·è¾“å…¥ä¿®æ”¹åçš„å”®ä»·"<<endl;
 		double c;
 		cin>>c;
 		book.setRetail(c);
-		cout<<"ÒÑĞŞ¸ÄÊÛ¼ÛÎª"<<book.retail()<<endl;
+		cout<<"å·²ä¿®æ”¹å”®ä»·ä¸º"<<book.retail()<<endl;
 		break;
     case '5':
     	bookfile_managing();
@@ -406,7 +407,7 @@ void Edit_Book(BookData& book)
 	case 6:
 		break;
 	default:
-		cout<<"ÇëÊäÈë1-5Ö®¼äÊı¡°"<<endl;
+		cout<<"è¯·è¾“å…¥1-5ä¹‹é—´æ•°â€œ"<<endl;
 		break;
 	}
 	pause();
@@ -435,7 +436,7 @@ void read_file(void)
 	int i=0;
 	if (!basic_ifstream)
 	{
-		cout<<"¶ÁÈ¡Êé¿âÊ§°Ü"<<endl;
+		cout<<"è¯»å–ä¹¦åº“å¤±è´¥"<<endl;
 		return ;
 	}getline(basic_ifstream,title);
 	while (basic_ifstream>>title>>isbn>>author>>qtyOnHand>>retail)
@@ -447,9 +448,6 @@ void read_file(void)
 		books[i].setRetail(retail);
 		books[i].isexist=true;
 		i++;
-	}//¶ÁÈ¡Êé¿â
-	basic_ifstream.close();//¹Ø±ÕÎÄ¼şÊäÈëÁ÷
+	}//è¯»å–ä¹¦åº“
+	basic_ifstream.close();//å…³é—­æ–‡ä»¶è¾“å…¥æµ
 }
-bool doubleused_title(void)
-
-bool doubleused_isbn(void);

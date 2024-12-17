@@ -33,7 +33,8 @@ private:
     std::string bookAuthor;
 
 };//定义书籍信息类
-
+bool doubleused_title(std::string&);
+bool doubleused_isbn(std::string&);
 
 
 
