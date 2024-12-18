@@ -35,7 +35,8 @@ private:
 };//定义书籍信息类
 bool doubleused_title(std::string&);
 bool doubleused_isbn(std::string&);
-
-
+std::string operator+(const std::string& a,int b);
+bool doubleused_title(std::string& a);
+bool doubleused_isbn(std::string& a);
 
 #endif //BOOKDATA_H

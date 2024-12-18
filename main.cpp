@@ -32,17 +32,7 @@ void read_file(void);//读取书库
 
 BookData operator -(BookData& book,int a);
 
-string operator+(const string& a,int b)
-{
-	string s=a;
-	s[s.length()-1]+=b;
-	if (s[s.length()-1]>'9')
-	{
-		s[s.length()-1]=s[s.length()-1]-10;
-		s[s.length()-2]+=1;
-	}
-	return s;
-}//字符串加int自动加在最后一位,可进1位
+
 
 //---------------------------------------------------------
 
@@ -404,7 +394,7 @@ void Edit_Book(BookData& book)
     case '5':
     	bookfile_managing();
 		return;
-	case 6:
+	case '6':
 		break;
 	default:
 		cout<<"请输入1-5之间数“"<<endl;

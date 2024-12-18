@@ -9,7 +9,17 @@
 #include <string>
 extern bool isempty(int);
 extern BookData books[50];
-extern std::string operator+(const std::string& a,int b);
+std::string operator+(const std::string& a,int b)
+{
+    std::string s=a;
+    s[s.length()-1]+=b;
+    if (s[s.length()-1]>'9')
+    {
+        s[s.length()-1]=s[s.length()-1]-10;
+        s[s.length()-2]+=1;
+    }
+    return s;
+}//字符串加int自动加在最后一位,可进1位
 BookData::BookData()
 {
     this->isexist=false;//初始化认为书不存在
@@ -32,10 +42,11 @@ void BookData:: setQty(int qty)
 }
 void BookData:: setISBN(std::string& isbn)
 {
+    std::string s=(isbn+1);
     if (!doubleused_isbn(isbn))
     this->isbn=isbn;//
     else
-    BookData::setISBN(isbn+1);
+        BookData::setISBN(s);
 }
 void BookData:: setRetail(double retail)
 {
@@ -66,7 +77,7 @@ double BookData:: retail(void)
 {
     return this -> Retail;
 }
-bool doubleused_title(std::string a)
+bool doubleused_title(std::string& a)
 {
     int i=0;
     while(!isempty(i))
