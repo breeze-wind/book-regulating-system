@@ -39,14 +39,12 @@ BookData operator -(BookData& book,int a);
 int main()
 {
 	SetConsoleOutputCP(CP_UTF8);
- //BookData books[200];//书库容器
 	read_file();
-
     blockchoose();//进入模块选择
-    
 }
 void addBook(void)
-{string a;
+{   system("cls");
+	string a;
 	cout<<"想加哪本书，输入书名：";
 	cin>>a;//存一下书名
 	int i=0;
@@ -184,7 +182,7 @@ void system_exit(void)
 
 }//把程序里的再写进文件，并结束
 void blockchoose()
-{
+{  system("cls");
 	cout<<"\t nuaa图书管理系统\t\n"<<"主菜单"<<endl<<"1.收银模块"<<endl<<"2.书库管理模块"<<endl<<"3.报表模块"<<endl<<"4.退出系统"<<endl;
 	cout<<"请输入1-4内数字来选择"<<endl;
 	string a;
@@ -192,7 +190,9 @@ void blockchoose()
 	while(a<"1"||a>"4")
 	{
 		cout<<"error:请输入1-4内数字"<<endl;
-		cin>>a;
+		pause();
+		blockchoose();
+		return;
 
 	}
 	switch(a[0])
@@ -220,6 +220,7 @@ void pause(void)
 
 void cash_managing(void)
 {
+	system("cls");
 	string a;//isbn
 	int b=0;//数量
 	cout<<"\t前台销售模块\t"<<endl;
@@ -272,6 +273,7 @@ void cash_managing(void)
 	cout<<"应付金额"<<fixed<<setprecision(2)<<b1*1.06<<endl;
 	cout<<"\n\n谢谢光临！";
 	books[i]-b;
+	pause();
 	 blockchoose();
 }
 void Bookinfo(BookData& book)
@@ -315,7 +317,7 @@ void LookUpBook(string a)
 // }
 
 void bookfile_managing(void)
-{
+{  system("cls");
      cout<<"\t\t\tnuaa图书管理系统\t\t\n\t\t\t 书库管理模块\t\t\n\n1.查找某本书的信息\n2.增加书\n3.修改书的信息\n4.删除书\n5.返回到主菜单"<<endl;
 	 cout<<"输入选择";
 	 int a=0;
@@ -401,7 +403,6 @@ void Edit_Book(BookData& book)
 		break;
 	}
 	pause();
-	//system("clear");
 	Edit_Book(book);
 	return;
 }
